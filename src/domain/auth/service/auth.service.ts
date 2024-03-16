@@ -53,4 +53,13 @@ export class AuthService implements AuthInterface {
 
         return true
     }
+    
+    async refresh(payload: any): Promise<TokenResponse> {
+        try {
+            const result = await this.tokenService.generateUserToken({iss: payload.iss})
+            return result
+        } catch (error) {
+            throw new TokenGenerateException()
+        }
+    }
 }
