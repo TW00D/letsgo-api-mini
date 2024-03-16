@@ -24,4 +24,20 @@ export class EnvService {
     static getServerAddress(): string {
         return `${this.getServer}:${this.getPort}`
     }
+
+    static getAccessTokenSecretKey(): string {
+        return this.configService.get<string>("JWT_ACCESS_SECRET")
+    }
+
+    static getAccessTokenExpiresIn(): string {
+        return this.configService.get<string>("JWT_ACCESS_EXPIRES_IN")
+    }
+
+    static getRefreshTokenSecretKey(): string {
+        return this.configService.get<string>("JWT_REFRESH_SECRET")
+    }
+
+    static getRefreshTokenExpiresIn(): string {
+        return this.configService.get<string>("JWT_REFRESH_EXPIRES_IN")
+    }
 }
