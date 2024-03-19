@@ -2,8 +2,8 @@
 name: Feature
 about: 새로운 기능을 구현합니다
 title: "[FEAT]"
-labels: ''
-assignees: ''
+labels: enhancement
+assignees: yr0118kim, stev3j, wlals1126, ljm9894, levhyun, PARAOOO, fullgukbap
 
 ---
 

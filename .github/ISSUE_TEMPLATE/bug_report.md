@@ -2,8 +2,8 @@
 name: Bug report
 about: 버그를 해결합니다.
 title: "[BUG]"
-labels: ''
-assignees: ''
+labels: bug
+assignees: yr0118kim, stev3j, wlals1126, ljm9894, levhyun, PARAOOO, fullgukbap
 
 ---
 
