@@ -7,5 +7,5 @@ export const ValidMessageConstants = {
     PASSWORD_LENGTH: `The 'password' field can be anywhere from ${ValidValue.PASSWORD_LENGTH_MIN} to ${ValidValue.PASSWORD_LENGTH_MAX} in length.`,
     PASSWORD_STRING: `The 'password' field accepts only strings.`,
     PASSWORD_NOT_EMPTY: `The 'password' field does not accept null, undefined, \`\`, [].`,
-    IMAGE_STRING: `The 'image' field accepts only strings.(url)`
+    IMAGE_STRING: `The 'image' field accepts only strings.(url)`,
 }
