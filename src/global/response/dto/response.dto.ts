@@ -1,17 +1,15 @@
-
 export class GeneralResponse {
+  code: number;
 
-    code: number;
+  message: string;
 
-    message: string;
+  data: any;
 
-    data: any;
-
-    static of(data: any): GeneralResponse {
-        return {
-            code: data.code,
-            message: data.message,
-            data: data.data
-        }
-    }
-}   
+  static of(data: any): GeneralResponse {
+    return {
+      code: data.code,
+      message: data.message,
+      data: data.data,
+    };
+  }
+}

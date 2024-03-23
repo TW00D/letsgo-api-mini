@@ -1,6 +1,6 @@
-import { ConfigModuleOptions } from "@nestjs/config";
+import { ConfigModuleOptions } from '@nestjs/config';
 
-export const EnvConfig: ConfigModuleOptions = { 
-    isGlobal: true,
-    envFilePath: '.env' 
-}
+export const EnvConfig: ConfigModuleOptions = {
+  isGlobal: true,
+  envFilePath: '.env',
+};
