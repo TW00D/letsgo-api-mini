@@ -15,8 +15,9 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  username String @unique @db.VarChar(45)
-  password String @db.VarChar(100)
+  username String @unique @db.VarChar(255)
+  nickname String @db.VarChar(255)
+  password String @db.VarChar(255)
   image String? @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
