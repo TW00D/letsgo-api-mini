@@ -5,15 +5,12 @@ import { LoggerMiddleware } from './global/middleware/logger.middleware';
 import { AuthModule } from './domain/auth/presentation/module/auth.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(EnvConfig),
-    AuthModule
-  ],
+  imports: [ConfigModule.forRoot(EnvConfig), AuthModule],
   controllers: [],
   providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
