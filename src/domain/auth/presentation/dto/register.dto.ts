@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, Length, Min } from 'class-validator';
 import { User } from 'src/domain/user/domain/user.model';
 import * as bcrypt from 'bcrypt';
 import { ValidValue } from 'src/global/validator/valid.value';
@@ -13,6 +13,13 @@ export class RegisterRequest {
   @IsNotEmpty({ message: ValidMessageConstants.USERNAME_NOT_EMPTY })
   readonly username: string;
 
+  @Length(ValidValue.NICKNAME_LENGTH_MIN, ValidValue.NICKNAME_LENGTH_MAX, {
+    message: ValidMessageConstants.NICKNAME_LENGTH,
+  })
+  @IsString({ message: ValidMessageConstants.NICKNAME_STRING })
+  @IsNotEmpty({ message: ValidMessageConstants.NICKNAME_NOT_EMPTY })
+  readonly nickname: string;
+
   @Length(ValidValue.PASSWORD_LENGTH_MIN, ValidValue.PASSWORD_LENGTH_MAX, {
     message: ValidMessageConstants.PASSWORD_LENGTH,
   })
@@ -26,6 +33,7 @@ export class RegisterRequest {
   static async ToModel(request: RegisterRequest): Promise<User> {
     const user = new User();
     user.username = request.username;
+    user.nickname = request.nickname;
     user.password = await bcrypt.hash(request.password, BcryptValue.salt);
     user.image = request.image;
     return user;
