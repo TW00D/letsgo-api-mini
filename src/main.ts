@@ -6,13 +6,13 @@ import { ExceptionFilter } from './global/exception/filter/exception.filter';
 import { ValidationPipeSetting } from './global/validator/request.validator';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  app.setGlobalPrefix('/v1/api')
+  const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('/v1/api');
 
-  app.enableCors(CorsConfig)
-  app.useGlobalPipes(ValidationPipeSetting)
-  app.useGlobalFilters(new ExceptionFilter())
+  app.enableCors(CorsConfig);
+  app.useGlobalPipes(ValidationPipeSetting);
+  app.useGlobalFilters(new ExceptionFilter());
 
-  await app.listen(EnvService.getPort())
+  await app.listen(EnvService.getPort());
 }
 bootstrap();

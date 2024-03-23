@@ -1,4 +1,4 @@
-import { ValidValue } from "../validator/valid.value";
+import { ValidValue } from '../validator/valid.value';
 
 export const ValidMessageConstants = {
     USERNAME_LENGTH: `The 'username' field can be anywhere from ${ValidValue.USERNAME_LENGTH_MIN} to ${ValidValue.USERNAME_LENGTH_MAX} in length.`,
@@ -13,3 +13,4 @@ export const ValidMessageConstants = {
     CATEGORY_NOT_EMPTY : '카테고리 이름이 비어 있습니다.',
 
 }
+

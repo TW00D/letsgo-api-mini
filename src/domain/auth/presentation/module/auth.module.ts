@@ -9,11 +9,14 @@ import { AccessTokenStrategy } from 'src/global/lib/jwt/strategy/access-token.st
 import { RefreshTokenStrategy } from 'src/global/lib/jwt/strategy/refresh-token.strategy';
 
 @Module({
-    controllers: [AuthController],
-    providers:[AuthService,PrismaService,TokenService,AccessTokenStrategy,RefreshTokenStrategy],
-    imports:[
-        PassportModule,
-        JwtModule.register({})
-    ]
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    PrismaService,
+    TokenService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
+  imports: [PassportModule, JwtModule.register({})],
 })
-export class AuthModule{}
+export class AuthModule {}

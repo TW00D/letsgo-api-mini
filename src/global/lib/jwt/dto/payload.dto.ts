@@ -1,3 +1,3 @@
 export interface Payload {
-    iss: string
+  iss: string;
 }
