@@ -19,5 +19,71 @@ model User {
   password String @db.VarChar(100)
   image String? @db.VarChar(255)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  
+  like_comment Like_comment[]
+  like Like[]
+  post Post[]
+  comment Comment[]
 }
+
+model Post{
+  id Int @default(autoincrement()) @id
+  title String
+  content String @db.Text
+  viewed Int @default(0)
+  picture String
+  user_id Int
+  category_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+
+  user User @relation(fields : [user_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
+  like Like[]
+  comment Comment[]
+}
+
+model Category{
+  id Int @default(autoincrement()) @id
+  name String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+  post Post[]
+}
+
+model Like{
+  id Int @default(autoincrement()) @id
+  post_id Int
+  user_id Int
+  post Post @relation(fields: [post_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Like_comment{
+  id Int @default(autoincrement()) @id
+  user_id Int
+  comment_id Int
+  user User @relation(fields: [user_id], references: [id])
+  comment Comment @relation(fields: [comment_id], references: [id])
+}
+
+model Comment{
+  id Int @default(autoincrement()) @id
+  content String
+  post_id Int
+  user_id Int
+  parent_comment_id Int?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+
+  user User @relation(fields: [user_id], references: [id])
+  post Post @relation(fields: [post_id], references: [id])
+  
+  
+  like_comment Like_comment[]
+
+}
+
+
