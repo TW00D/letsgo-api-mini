@@ -12,4 +12,9 @@ export class CategoryService {
     });
     return category;
   }
+
+  public async getAll(): Promise<Category[]>{
+    const category : Category[] = await this.prismaService.category.findMany({});
+    return category;
+  }
 }
