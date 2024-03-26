@@ -13,7 +13,7 @@ import { AccessTokenGuard } from 'src/global/lib/jwt/guard/access-token.guard';
 import { UserService } from '../service/user.service';
 
 @Controller('/user')
-export class AuthController {
+export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @HttpCode(HttpStatus.OK)
