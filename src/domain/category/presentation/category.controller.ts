@@ -6,12 +6,14 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CreateCategoryRequest } from './dto/category-create.dto';
 import { CategoryService } from '../service/category.service';
 import { GeneralResponse } from 'src/global/response/dto/response.dto';
 import { ReasonPhrases } from 'http-status-codes';
 import { Category } from '../domain/category.model';
+import { UpdateCategoryRequest } from './dto/category-update.dto';
 
 @Controller('')
 export class CategoryController {
@@ -45,6 +47,21 @@ export class CategoryController {
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
       data: result,
+    });
+  }
+  @Put('category/:id')
+  async update(
+    @Param('id') categoryId: number,
+    @Body() request: UpdateCategoryRequest,
+  ): Promise<GeneralResponse> {
+    const result: Category | undefined = await this.categoryService.update(
+      categoryId,
+      request,
+    );
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: true,
     });
   }
 }
