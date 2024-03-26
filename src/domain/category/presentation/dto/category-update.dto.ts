@@ -1,8 +1,8 @@
-import { IsEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ValidMessageConstants } from 'src/global/static/valid-message.constants';
 
-export class UpdateRequest {
+export class UpdateCategoryRequest {
   @IsString({ message: ValidMessageConstants.CATEGORY_STRING })
-  @IsEmpty({ message: ValidMessageConstants.CATEGORY_NOT_EMPTY })
-  nickname: string;
+  @IsNotEmpty({ message: ValidMessageConstants.CATEGORY_NOT_EMPTY })
+  name: string;
 }
