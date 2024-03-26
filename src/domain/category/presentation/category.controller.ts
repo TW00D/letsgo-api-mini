@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -58,6 +59,16 @@ export class CategoryController {
       categoryId,
       request,
     );
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: true,
+    });
+  }
+
+  @Delete('/category/:id')
+  async delete(@Param('id') categoryId: number): Promise<GeneralResponse> {
+    await this.categoryService.delete(categoryId);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
