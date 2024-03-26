@@ -46,4 +46,15 @@ export class CategoryService {
 
     return result;
   }
+
+  public async delete(categoryId: number): Promise<void> {
+    const category: Category | undefined =
+      await this.prismaService.category.findUnique({
+        where: { id: categoryId },
+      });
+    if (!category) {
+      throw new CategoryNotFoundException();
+    }
+    await this.prismaService.category.delete({ where: { id: categoryId } });
+  }
 }
