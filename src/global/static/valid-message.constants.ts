@@ -11,8 +11,7 @@ export const ValidMessageConstants = {
   PASSWORD_STRING: `The 'password' field accepts only strings.`,
   PASSWORD_NOT_EMPTY: `The 'password' field does not accept null, undefined, \`\`, [].`,
   IMAGE_STRING: `The 'image' field accepts only strings.(url)`,
-
-
+  
   CATEGORY_STRING: '카테고리 이름은 문자열이여야 합니다.',
   CATEGORY_NOT_EMPTY: '카테고리 이름이 비어 있습니다.',
 };
