@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Category } from '../domain/category.model';
 import { CreateCategoryRequest } from '../presentation/dto/category-create.dto';
 import { PrismaService } from 'prisma/service/prisma.service';
+import { UpdateCategoryRequest } from '../presentation/dto/category-update.dto';
+import { CategoryNotFoundException } from '../exception/category-notfound.exception';
 
 @Injectable()
 export class CategoryService {
@@ -25,5 +27,23 @@ export class CategoryService {
         where: { id: categoryId },
       });
     return category;
+  }
+  public async update(
+    categoryId: number,
+    request: UpdateCategoryRequest,
+  ): Promise<Category> {
+    const category: Category | undefined =
+      await this.prismaService.category.findUnique({
+        where: { id: categoryId },
+      });
+    if (!category) {
+      throw new CategoryNotFoundException();
+    }
+    const result: Category = await this.prismaService.category.update({
+      where: { id: categoryId },
+      data: await UpdateCategoryRequest.ToModel(request),
+    });
+
+    return result;
   }
 }
