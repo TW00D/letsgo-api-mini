@@ -12,4 +12,18 @@ export class CategoryService {
     });
     return category;
   }
+
+  public async getAll(): Promise<Category[]> {
+    const category: Category[] | undefined =
+      await this.prismaService.category.findMany({});
+    return category;
+  }
+
+  public async get(categoryId: number): Promise<Category> {
+    const category: Category | undefined =
+      await this.prismaService.category.findFirst({
+        where: { id: categoryId },
+      });
+    return category;
+  }
 }
