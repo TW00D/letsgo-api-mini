@@ -30,4 +30,11 @@ export class UserService {
     });
     return true;
   }
+
+  async delete(username: string): Promise<boolean> {
+    const user = await this.prismaService.user.delete({
+      where: { username: username },
+    });
+    return true;
+  }
 }
