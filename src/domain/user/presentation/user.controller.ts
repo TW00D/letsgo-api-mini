@@ -6,6 +6,7 @@ import {
   HttpCode,
   UseGuards,
   Get,
+  Param,
 } from '@nestjs/common';
 import { GeneralResponse } from 'src/global/response/dto/response.dto';
 import { ReasonPhrases } from 'http-status-codes';
@@ -21,6 +22,18 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   async readAll(): Promise<GeneralResponse> {
     const result = await this.userService.readAll();
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: result,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('/username/:username')
+  @UseGuards(AccessTokenGuard)
+  async read(@Param('username') username: string): Promise<GeneralResponse> {
+    const result = await this.userService.read(username);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
