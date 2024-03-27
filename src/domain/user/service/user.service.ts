@@ -10,4 +10,11 @@ export class UserService {
     const users = await this.prismaService.user.findMany();
     return users;
   }
+
+  async read(username: string): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
+      where: { username: username },
+    });
+    return user;
+  }
 }
