@@ -5,6 +5,6 @@ export class User implements Prisma.UserCreateInput {
   nickname: string;
   password: string;
   image?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }

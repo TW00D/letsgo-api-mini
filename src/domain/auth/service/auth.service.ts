@@ -3,7 +3,6 @@ import { PrismaService } from 'prisma/service/prisma.service';
 import { RegisterRequest } from '../presentation/dto/register.dto';
 import { UserNotFoundException } from 'src/domain/user/exception/user-notfound.exception';
 import { UserAlreadyExistsException } from 'src/domain/user/exception/user-already-exists.exception';
-import { AuthInterface } from './auth.interface';
 import { PasswordNotMatchException } from '../exception/password-notmatch.exception';
 import { TokenGenerateException } from 'src/global/exception/global/token-generate.exception';
 import { TokenService } from 'src/global/lib/jwt/service/token.service';
@@ -12,7 +11,7 @@ import { TokenResponse } from 'src/global/lib/jwt/dto/token.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class AuthService implements AuthInterface {
+export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly tokenService: TokenService,
