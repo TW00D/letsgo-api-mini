@@ -4,10 +4,9 @@ import { CreateCategoryRequest } from '../presentation/dto/category-create.dto';
 import { PrismaService } from 'prisma/service/prisma.service';
 import { UpdateCategoryRequest } from '../presentation/dto/category-update.dto';
 import { CategoryNotFoundException } from '../exception/category-notfound.exception';
-import { CategoryInterface } from './category.interface';
 
 @Injectable()
-export class CategoryService implements CategoryInterface {
+export class CategoryService {
   constructor(private readonly prismaService: PrismaService) {}
   public async create(request: CreateCategoryRequest): Promise<boolean> {
     const category: Category = await this.prismaService.category.create({
