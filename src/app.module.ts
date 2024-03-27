@@ -5,6 +5,7 @@ import { LoggerMiddleware } from './global/middleware/logger.middleware';
 import { AuthModule } from './domain/auth/presentation/module/auth.module';
 import { CategoryModule } from './domain/category/presentation/module/category.module';
 import { UserModule } from './domain/user/presentation/module/user.module';
+import { PostModule } from './domain/post/presentation/module/post.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserModule } from './domain/user/presentation/module/user.module';
     AuthModule,
     UserModule,
     CategoryModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],
