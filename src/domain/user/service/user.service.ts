@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/service/prisma.service';
 import { User } from '../domain/user.model';
 import { UpdateRequest } from '../presentation/dto/update.dto';
+import { use } from 'passport';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,13 @@ export class UserService {
         nickname: request.new_nickname,
         image: request.new_image,
       },
+      where: { username: username },
+    });
+    return true;
+  }
+
+  async delete(username: string): Promise<boolean> {
+    const user = await this.prismaService.user.delete({
       where: { username: username },
     });
     return true;
