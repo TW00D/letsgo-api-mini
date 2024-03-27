@@ -13,4 +13,6 @@ export const ValidMessageConstants = {
   IMAGE_STRING: `The 'image' field accepts only strings.(url)`,
   CATEGORY_STRING: `The 'category' field accepts only strings.`,
   CATEGORY_NOT_EMPTY: `The 'category' field does not accept null, undefined, \`\`, [].`,
+  ICON_STRING: `The 'icon' field accepts only strings.`,
+  ICON_NOT_EMPTY: `The 'icon' field does not accept null, undefined, \`\`, [].`,
 };

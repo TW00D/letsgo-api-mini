@@ -7,9 +7,14 @@ export class CreateCategoryRequest {
   @IsNotEmpty({ message: ValidMessageConstants.CATEGORY_NOT_EMPTY })
   name: string;
 
+  @IsString({ message: ValidMessageConstants.ICON_STRING })
+  @IsNotEmpty({ message: ValidMessageConstants.ICON_NOT_EMPTY })
+  icon: string;
+
   static async ToModel(request: CreateCategoryRequest): Promise<Category> {
     const category = new Category();
     category.name = request.name;
+    category.icon = request.icon;
 
     return category;
   }

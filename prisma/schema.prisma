@@ -48,6 +48,7 @@ model Post{
 model Category{
   id Int @default(autoincrement()) @id
   name String
+  icon String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt()
