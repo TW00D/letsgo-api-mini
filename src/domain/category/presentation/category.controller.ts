@@ -33,7 +33,7 @@ export class CategoryController {
   }
   @Get('/category')
   async getAll(): Promise<GeneralResponse> {
-    const result: Category[] | null = await this.categoryService.getAll();
+    const result: Category[] | null = await this.categoryService.readAll();
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
@@ -43,7 +43,7 @@ export class CategoryController {
   @Get('/category/:id')
   async get(@Param('id') categoryId: number): Promise<GeneralResponse> {
     const result: Category | undefined =
-      await this.categoryService.get(categoryId);
+      await this.categoryService.read(categoryId);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
@@ -55,7 +55,7 @@ export class CategoryController {
     @Param('id') categoryId: number,
     @Body() request: UpdateCategoryRequest,
   ): Promise<GeneralResponse> {
-    const result: Category | undefined = await this.categoryService.update(
+    const result: boolean | undefined = await this.categoryService.update(
       categoryId,
       request,
     );
