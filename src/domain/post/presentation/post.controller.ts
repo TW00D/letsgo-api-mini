@@ -107,4 +107,19 @@ export class PostController {
       data: true,
     });
   }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('/:id/like')
+  @UseGuards(AccessTokenGuard)
+  async like(
+    @TokenInfo() userInfo: any,
+    @Param('id') postId: number,
+  ): Promise<GeneralResponse> {
+    await this.postService.like(userInfo, postId);
+    return GeneralResponse.of({
+      code: HttpStatus.CREATED,
+      message: ReasonPhrases.CREATED,
+      data: true,
+    });
+  }
 }
