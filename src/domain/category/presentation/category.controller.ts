@@ -16,10 +16,10 @@ import { ReasonPhrases } from 'http-status-codes';
 import { Category } from '../domain/category.model';
 import { UpdateCategoryRequest } from './dto/category-update.dto';
 
-@Controller('')
+@Controller('/category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-  @Post('/category')
+  @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createCategoryRequest: CreateCategoryRequest,
@@ -31,31 +31,31 @@ export class CategoryController {
       data: true,
     });
   }
-  @Get('/category')
+  @Get('/')
   async getAll(): Promise<GeneralResponse> {
-    const result: Category[] | null = await this.categoryService.getAll();
+    const result: Category[] | null = await this.categoryService.readAll();
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
       data: result,
     });
   }
-  @Get('/category/:id')
+  @Get('/:id')
   async get(@Param('id') categoryId: number): Promise<GeneralResponse> {
     const result: Category | undefined =
-      await this.categoryService.get(categoryId);
+      await this.categoryService.read(categoryId);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
       data: result,
     });
   }
-  @Put('category/:id')
+  @Put('/:id')
   async update(
     @Param('id') categoryId: number,
     @Body() request: UpdateCategoryRequest,
   ): Promise<GeneralResponse> {
-    const result: Category | undefined = await this.categoryService.update(
+    const result: boolean | undefined = await this.categoryService.update(
       categoryId,
       request,
     );
@@ -66,7 +66,7 @@ export class CategoryController {
     });
   }
 
-  @Delete('/category/:id')
+  @Delete('/:id')
   async delete(@Param('id') categoryId: number): Promise<GeneralResponse> {
     await this.categoryService.delete(categoryId);
     return GeneralResponse.of({

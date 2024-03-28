@@ -8,20 +8,20 @@ import { CategoryNotFoundException } from '../exception/category-notfound.except
 @Injectable()
 export class CategoryService {
   constructor(private readonly prismaService: PrismaService) {}
-  public async create(request: CreateCategoryRequest): Promise<Category> {
+  public async create(request: CreateCategoryRequest): Promise<boolean> {
     const category: Category = await this.prismaService.category.create({
       data: await CreateCategoryRequest.ToModel(request),
     });
-    return category;
+    return true;
   }
 
-  public async getAll(): Promise<Category[]> {
+  public async readAll(): Promise<Category[]> {
     const category: Category[] | undefined =
       await this.prismaService.category.findMany({});
     return category;
   }
 
-  public async get(categoryId: number): Promise<Category> {
+  public async read(categoryId: number): Promise<Category> {
     const category: Category | undefined =
       await this.prismaService.category.findFirst({
         where: { id: categoryId },
@@ -31,7 +31,7 @@ export class CategoryService {
   public async update(
     categoryId: number,
     request: UpdateCategoryRequest,
-  ): Promise<Category> {
+  ): Promise<boolean> {
     const category: Category | undefined =
       await this.prismaService.category.findUnique({
         where: { id: categoryId },
@@ -44,10 +44,10 @@ export class CategoryService {
       data: await UpdateCategoryRequest.ToModel(request),
     });
 
-    return result;
+    return true;
   }
 
-  public async delete(categoryId: number): Promise<void> {
+  public async delete(categoryId: number): Promise<boolean> {
     const category: Category | undefined =
       await this.prismaService.category.findUnique({
         where: { id: categoryId },
@@ -56,5 +56,6 @@ export class CategoryService {
       throw new CategoryNotFoundException();
     }
     await this.prismaService.category.delete({ where: { id: categoryId } });
+    return true
   }
 }
