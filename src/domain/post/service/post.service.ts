@@ -8,7 +8,6 @@ import { CategoryNotFoundException } from 'src/domain/category/exception/categor
 import { SortNameException } from '../exception/sort-name.exception';
 import { Post } from '@prisma/client';
 import { PostResponse } from '../presentation/dto/post-response.dto';
-import { QueryFailedException } from '../exception/query-failed.exception';
 
 @Injectable()
 export class PostService {
@@ -40,96 +39,100 @@ export class PostService {
   }
 
   public async readAll(
+    categoryId: number,
+    userId: number,
     payload: any,
     order: string,
   ): Promise<PostResponse[] | undefined> {
     let posts: Post[] | undefined;
     let filterPosts: PostResponse[] | undefined;
-    if (!order) {
-      throw new QueryFailedException();
-    }
-    switch (order) {
-      case 'recent':
-        posts = await this.prismaService.post.findMany({
-          orderBy: {
-            created_at: 'desc',
-          },
-          include: {
-            _count: {
-              select: {
-                like: true,
-                comment: true,
-              },
-            },
-            like: {
-              where: {
-                user: { username: payload.iss },
-              },
-            },
-          },
-        });
-        filterPosts = posts.map((post) => {
-          let posting = new PostResponse(post);
-          return posting;
-        });
+    const whereConditions: any = {};
 
-        break;
-      case 'comments':
-        posts = await this.prismaService.post.findMany({
-          orderBy: {
-            comment: {
-              _count: 'desc',
+    if (!isNaN(categoryId)) {
+      whereConditions.category_id = categoryId;
+    }
+    if (!isNaN(userId)) {
+      whereConditions.user_id = userId;
+    }
+    if (order) {
+      switch (order) {
+        case 'recent':
+          posts = await this.prismaService.post.findMany({
+            where: whereConditions,
+            orderBy: {
+              created_at: 'desc',
             },
-          },
-          include: {
-            _count: {
-              select: {
-                like: true,
-                comment: true,
+            include: {
+              _count: {
+                select: {
+                  like: true,
+                  comment: true,
+                },
+              },
+              like: {
+                where: {
+                  user: { username: payload.iss },
+                },
               },
             },
-            like: {
-              where: {
-                user: { username: payload.iss },
+          });
+          break;
+        case 'comments':
+          posts = await this.prismaService.post.findMany({
+            where: whereConditions,
+            orderBy: {
+              comment: {
+                _count: 'desc',
               },
             },
-          },
-        });
-        filterPosts = posts.map((post) => {
-          let posting = new PostResponse(post);
-          return posting;
-        });
-        break;
-      case 'popular':
-        posts = await this.prismaService.post.findMany({
-          orderBy: {
-            like: {
-              _count: 'desc',
-            },
-          },
-          include: {
-            _count: {
-              select: {
-                like: true,
-                comment: true,
+            include: {
+              _count: {
+                select: {
+                  like: true,
+                  comment: true,
+                },
+              },
+              like: {
+                where: {
+                  user: { username: payload.iss },
+                },
               },
             },
-            like: {
-              where: {
-                user: { username: payload.iss },
+          });
+          break;
+        case 'popular':
+          posts = await this.prismaService.post.findMany({
+            where: whereConditions,
+            orderBy: {
+              like: {
+                _count: 'desc',
               },
             },
-          },
-        });
-        filterPosts = posts.map((post) => {
-          let posting = new PostResponse(post);
-          return posting;
-        });
-        break;
-      default:
-        throw new SortNameException(order);
+            include: {
+              _count: {
+                select: {
+                  like: true,
+                  comment: true,
+                },
+              },
+              like: {
+                where: {
+                  user: { username: payload.iss },
+                },
+              },
+            },
+          });
+          break;
+        default:
+          throw new SortNameException(order);
+      }
+    } else {
+      posts = await this.prismaService.post.findMany({});
+    }
+
+    if (posts) {
+      filterPosts = posts.map((post) => new PostResponse(post));
     }
     return filterPosts;
   }
-  
 }
