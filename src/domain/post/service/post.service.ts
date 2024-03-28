@@ -12,6 +12,7 @@ import { PostNotFoundException } from '../exception/post-notfound.exception';
 import { UpdatePostRequest } from '../presentation/dto/post-update.dto';
 import { PostFixOnlyMyException } from '../exception/fix-only-my.exception';
 import { AlreadyLikeException } from '../exception/already-like.exception';
+import { AlreadyUnlikeException } from '../exception/already-unlike.exception';
 
 @Injectable()
 export class PostService {
@@ -248,6 +249,33 @@ export class PostService {
         user: { connect: { username: payload.iss } },
       },
     });
+    return true;
+  }
+
+  public async unlike(payload: any, postId: number): Promise<boolean> {
+    const post = await this.prismaService.post.findUnique({
+      where: { id: postId },
+      include: { user: true },
+    });
+    const user = await this.userService.read(post.user.username);
+
+    if (!post) {
+      throw new PostNotFoundException();
+    }
+
+    const like = await this.prismaService.like.findFirst({
+      where: {
+        user: { username: payload.iss },
+        post_id: postId,
+      },
+    });
+
+    if (!like) {
+      throw new AlreadyUnlikeException();
+    }
+
+    await this.prismaService.like.delete({ where: { id: like.id } });
+
     return true;
   }
 }
