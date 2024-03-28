@@ -149,4 +149,26 @@ export class PostService {
     }
     return filterPosts;
   }
+  public async read(
+    payload: any,
+    postId: number,
+  ): Promise<PostResponse | undefined> {
+    const post = await this.prismaService.post.findUnique({
+      where: { id: postId },
+      include: {
+        _count: {
+          select: {
+            like: true,
+            comment: true,
+          },
+        },
+        like: {
+          where: {
+            user: { username: payload.iss },
+          },
+        },
+      },
+    });
+    return new PostResponse(post);
+  }
 }
