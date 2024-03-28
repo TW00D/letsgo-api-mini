@@ -42,12 +42,17 @@ export class PostController {
   @UseGuards(AccessTokenGuard)
   async readAll(
     @TokenInfo() userInfo: any,
+    @Query('category') categoryId: number,
+    @Query('user') userId: number,
     @Query('order') order: string,
   ): Promise<GeneralResponse> {
     const posts: PostResponse[] | undefined = await this.postService.readAll(
+      categoryId,
+      userId,
       userInfo,
       order,
     );
+
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
