@@ -6,9 +6,11 @@ import { UserService } from 'src/domain/user/service/user.service';
 import { CategoryService } from 'src/domain/category/service/category.service';
 import { CategoryNotFoundException } from 'src/domain/category/exception/category-notfound.exception';
 import { SortNameException } from '../exception/sort-name.exception';
-import { Post } from '@prisma/client';
+import { Post, User } from '@prisma/client';
 import { PostResponse } from '../presentation/dto/post-response.dto';
 import { PostNotFoundException } from '../exception/post-notfound.exception';
+import { UpdatePostRequest } from '../presentation/dto/post-update.dto';
+import { PostFixOnlyMyException } from '../exception/fix-only-my.exception';
 
 @Injectable()
 export class PostService {
@@ -175,5 +177,32 @@ export class PostService {
       throw new PostNotFoundException();
     }
     return new PostResponse(post);
+  }
+  public async update(
+    payload: any,
+    request: UpdatePostRequest,
+    postId: number,
+  ): Promise<boolean> {
+    const post = await this.prismaService.post.findUnique({
+      where: { id: postId },
+      include: { user: true },
+    });
+
+    const user = await this.userService.read(post.user.username);
+
+    if (!post) {
+      throw new PostNotFoundException();
+    }
+
+    if (user.username !== payload.iss) {
+      throw new PostFixOnlyMyException();
+    }
+
+    await this.prismaService.post.update({
+      where: { id: postId },
+      data: await UpdatePostRequest.ToModel(request),
+    });
+
+    return true;
   }
 }
