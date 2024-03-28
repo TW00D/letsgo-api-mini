@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -57,6 +58,24 @@ export class PostController {
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
       data: posts,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('/:post')
+  @UseGuards(AccessTokenGuard)
+  async read(
+    @TokenInfo() userInfo: any,
+    @Param('post') postId: number,
+  ): Promise<GeneralResponse> {
+    const post: PostResponse | undefined = await this.postService.read(
+      userInfo,
+      postId,
+    );
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: post,
     });
   }
 }
