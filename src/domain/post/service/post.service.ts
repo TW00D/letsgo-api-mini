@@ -205,4 +205,22 @@ export class PostService {
 
     return true;
   }
+
+  public async delete(postId: number, payload: any): Promise<boolean> {
+    const post = await this.prismaService.post.findUnique({
+      where: { id: postId },
+      include: { user: true },
+    });
+    const user = await this.userService.read(post.user.username);
+    if (!post) {
+      throw new PostNotFoundException();
+    }
+
+    if (user.username !== payload.iss) {
+      throw new PostFixOnlyMyException();
+    }
+
+    await this.prismaService.post.delete({ where: { id: postId } });
+    return true;
+  }
 }
