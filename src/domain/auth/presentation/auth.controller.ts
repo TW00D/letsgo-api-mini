@@ -13,6 +13,7 @@ import { ReasonPhrases } from 'http-status-codes';
 import { LoginRequest } from './dto/login.dto';
 import { RefreshTokenGuard } from 'src/global/lib/jwt/guard/refresh-token.guard';
 import { TokenInfo } from 'src/global/decorator/token.decorator';
+import { AccessTokenGuard } from 'src/global/lib/jwt/guard/access-token.guard';
 
 @Controller('/auth')
 export class AuthController {

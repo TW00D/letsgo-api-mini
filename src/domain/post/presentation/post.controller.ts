@@ -1,24 +1,33 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { PostService } from '../service/post.service';
 import { GeneralResponse } from 'src/global/response/dto/response.dto';
 import { CreatePostRequest } from './dto/post-create.dto';
 import { ReasonPhrases } from 'http-status-codes';
 import { TokenInfo } from 'src/global/decorator/token.decorator';
-import { User } from '@prisma/client';
+import { AccessTokenGuard } from 'src/global/lib/jwt/guard/access-token.guard';
 
 @Controller('/post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @HttpCode(HttpStatus.CREATED)
   @Post('/')
-  public async create(
-    @TokenInfo() user: User,
+  @UseGuards(AccessTokenGuard)
+  async create(
+    @TokenInfo() userInfo: any,
     @Body() request: CreatePostRequest,
   ): Promise<GeneralResponse> {
-    await this.postService.create(user, request);
+    await this.postService.create(userInfo, request);
     return GeneralResponse.of({
       code: HttpStatus.CREATED,
-      message: ReasonPhrases.OK,
+      message: ReasonPhrases.CREATED,
       data: true,
     });
   }
