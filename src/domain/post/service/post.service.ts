@@ -8,6 +8,7 @@ import { CategoryNotFoundException } from 'src/domain/category/exception/categor
 import { SortNameException } from '../exception/sort-name.exception';
 import { Post } from '@prisma/client';
 import { PostResponse } from '../presentation/dto/post-response.dto';
+import { PostNotFoundException } from '../exception/post-notfound.exception';
 
 @Injectable()
 export class PostService {
@@ -128,6 +129,7 @@ export class PostService {
       }
     } else {
       posts = await this.prismaService.post.findMany({
+        where: whereConditions,
         include: {
           _count: {
             select: {
@@ -169,6 +171,9 @@ export class PostService {
         },
       },
     });
+    if (!post) {
+      throw new PostNotFoundException();
+    }
     return new PostResponse(post);
   }
 }
