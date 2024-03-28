@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,6 +19,7 @@ import { TokenInfo } from 'src/global/decorator/token.decorator';
 import { AccessTokenGuard } from 'src/global/lib/jwt/guard/access-token.guard';
 import { PostResponse } from './dto/post-response.dto';
 import { UpdatePostRequest } from './dto/post-update.dto';
+import { userInfo } from 'os';
 
 @Controller('/post')
 export class PostController {
@@ -84,6 +86,21 @@ export class PostController {
     @Body() request: UpdatePostRequest,
   ): Promise<GeneralResponse> {
     await this.postService.update(userInfo, request, postId);
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: true,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('/:id')
+  @UseGuards(AccessTokenGuard)
+  async delete(
+    @TokenInfo() userInfo: any,
+    @Param('id') postId: number,
+  ): Promise<GeneralResponse> {
+    await this.postService.delete(postId, userInfo);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
