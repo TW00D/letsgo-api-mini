@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -15,9 +16,8 @@ import { CreatePostRequest } from './dto/post-create.dto';
 import { ReasonPhrases } from 'http-status-codes';
 import { TokenInfo } from 'src/global/decorator/token.decorator';
 import { AccessTokenGuard } from 'src/global/lib/jwt/guard/access-token.guard';
-import { Post as PostModel } from '@prisma/client';
 import { PostResponse } from './dto/post-response.dto';
-import { userInfo } from 'os';
+import { UpdatePostRequest } from './dto/post-update.dto';
 
 @Controller('/post')
 export class PostController {
@@ -62,20 +62,32 @@ export class PostController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Get('/:post')
+  @Get('/:id')
   @UseGuards(AccessTokenGuard)
   async read(
     @TokenInfo() userInfo: any,
-    @Param('post') postId: number,
+    @Param('id') postId: number,
   ): Promise<GeneralResponse> {
-    const post: PostResponse | undefined = await this.postService.read(
-      userInfo,
-      postId,
-    );
+    const post: PostResponse = await this.postService.read(userInfo, postId);
     return GeneralResponse.of({
       code: HttpStatus.OK,
       message: ReasonPhrases.OK,
       data: post,
+    });
+  }
+  @HttpCode(HttpStatus.OK)
+  @Put('/:id')
+  @UseGuards(AccessTokenGuard)
+  async update(
+    @TokenInfo() userInfo: any,
+    @Param('id') postId: number,
+    @Body() request: UpdatePostRequest,
+  ): Promise<GeneralResponse> {
+    await this.postService.update(userInfo, request, postId);
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: true,
     });
   }
 }
