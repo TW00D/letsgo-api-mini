@@ -127,7 +127,21 @@ export class PostService {
           throw new SortNameException(order);
       }
     } else {
-      posts = await this.prismaService.post.findMany({});
+      posts = await this.prismaService.post.findMany({
+        include: {
+          _count: {
+            select: {
+              like: true,
+              comment: true,
+            },
+          },
+          like: {
+            where: {
+              user: { username: payload.iss },
+            },
+          },
+        },
+      });
     }
 
     if (posts) {
