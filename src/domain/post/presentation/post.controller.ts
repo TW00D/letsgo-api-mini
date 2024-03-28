@@ -122,4 +122,19 @@ export class PostController {
       data: true,
     });
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('/:id/like')
+  @UseGuards(AccessTokenGuard)
+  async unlike(
+    @TokenInfo() userInfo: any,
+    @Param('id') postId: number,
+  ): Promise<GeneralResponse> {
+    await this.postService.unlike(userInfo, postId);
+    return GeneralResponse.of({
+      code: HttpStatus.OK,
+      message: ReasonPhrases.OK,
+      data: true,
+    });
+  }
 }
